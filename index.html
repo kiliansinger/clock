@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>multab</title>
+    <title>Uhr</title>
     <link rel="stylesheet" href="style.css">
     
    
 	<link rel="manifest" href="./manifest.json" />
-	<meta name="description" content="multab" />
+	<meta name="description" content="Uhr" />
 	<meta name="theme-color" content="#2F3BA2" />
 
 	<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -40,35 +40,22 @@
 		}
 	</script>
    
-    
-    
-
     <div class="frontpage">
-		
+		<h2 id="comment"></h2>
+		<input type="text" id="input" autocomplete="off" placeholder="Uhrzeit eingeben: 12 30">
 		<ul class="no-print" id="menu">
 			<li><a id="check">Prüfen</a></li>
-			<li><a id="startadd">Add10</a></li>
-			<li><a id="startadd2">Add100</a></li>
-			<li><a id="startsub">Sub10</a></li>
-			<li><a id="startsub2">Sub100</a></li>
-			<li><a id="startaddsub2">AddSub100</a></li>
-			<li><a id="startmul">Mul10</a></li>
-			<li><a id="startdiv">Div10</a></li>
-			<li><a id="startmuldiv">MulDiv10</a></li>
-			<li><a id="startall">Alles10</a></li>
-			<li><a id="starttextmul">TextMul</a></li>
-			<li><a id="starttextall">TextAlles</a></li>
+			<li><a id="Stunden">Studen</a></li>
+			<li><a id="Halbe">Halbe</a></li>
+			<li><a id="Viertel">Viertel</a></li>
+			<li><a id="Minuten">Minuten</a></li>
 			<li><a id="print">Drucken</a></li>
 			<li><a id="update">Update</a></li>
-			<li><label for="exc">Bereich:</label><input type="text" name="range" id="range" size="5" placeholder="1-5,10"/></li>
 		</ul>
-		<h3>Ein mal eins</h3>
-		<p class="no-print">Ausfüllen und auf Check clicken. Neu erzeugt neue Aufgaben, oder ausdrucken (Menü und dieser Text verschwindet).</p>
-        <p id="comment"></p>
-		<div id="excercises">
+		<canvas id="canvas">	
             
-        </div>
-    </div>
+        </canvas>
+	    </div>
     
     <script src="app.js"></script>
 </body>

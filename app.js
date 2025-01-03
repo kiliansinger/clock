@@ -1,56 +1,51 @@
 function Sleep(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
-    
-function generateNumber(num,arr){
-    let ziffernarray=[];
-    let boolarray=[]
-    if(num==0){//num=0 means first multiplier
-        for(let i=0;i<arr.length;i++){
-            boolarray.push(arr[i][0]);
-        }
-        for(let j=1;j<arr[0].length;j++){
-            for(let i=0;i<arr.length;i++){
-                boolarray[i]|=arr[i][j];
-            }
-        }
-    }else{//num=>1 means we copy
-        for(let i=0;i<arr[0].length;i++){
-            boolarray.push(arr[num-1][i]);
-        }
-    }
 
-
-
-    for(let i=0;i<boolarray.length;i++){
-        if(boolarray[i]){
-            ziffernarray.push(i+1);
-        }
-    }
-    return ziffernarray
-}
-
-function wuerfle(ziffernarray){
-    let index=Math.floor(Math.random()*ziffernarray.length);
-    return ziffernarray[index];
-}
-
-
-document.getElementById("startadd").onclick = ()=>{start([["+",10]])};
-document.getElementById("startadd2").onclick = ()=>{start([["+",100]])};
-document.getElementById("startsub").onclick = ()=>{start([["-",10]])};
-document.getElementById("startsub2").onclick = ()=>{start([["-",100]])};
-document.getElementById("startaddsub2").onclick = ()=>{start([["+",100],["-",100]])};
-document.getElementById("startmul").onclick = ()=>{start([["*",10]])};
-document.getElementById("startdiv").onclick = ()=>{start([["/",10]])};
-document.getElementById("startmuldiv").onclick = ()=>{start([["*",10],["/",10]])};
-document.getElementById("startall").onclick = ()=>{start([["*",10],["/",10],["+",100],["-",100]])};
-document.getElementById("starttextmul").onclick = ()=>{start([["*",10],["/",10]],true)}
-document.getElementById("starttextall").onclick = ()=>{start([["*",10],["/",10],["+",10],["-",10]],true)}
-document.getElementById("check").onclick = check;
+document.getElementById("Stunden").onclick = ()=>{start(60)};
+document.getElementById("Halbe").onclick = ()=>{start(30)};
+document.getElementById("Viertel").onclick = ()=>{start(15)};
+document.getElementById("Minuten").onclick = ()=>{start(1)};
+document.getElementById("check").onclick = ()=>{check(document.getElementById("input").value)};
 document.getElementById("update").onclick = update;
 document.getElementById("print").onclick = printit;
-addEventListener("DOMContentLoaded", (event) => {document.getElementById("startmul").click()});
+
+document.getElementById("input").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+      check(event.target.value);
+  }
+});
+
+document.getElementById("input").addEventListener("blur", function(event) {
+  check(event.target.value,hours,minutes);
+});
+var hours=1;
+var minutes=1;
+
+function check(input){
+    try{
+      let time = hours * 60 + minutes;
+      let match=input.match(/(\d+)(:|\s+)(\d+)/);
+      let inputtime = parseInt(match[1]%12) * 60 + parseInt(match[3]);
+
+      if(inputtime == time) {
+          document.getElementById("comment").innerHTML = "Richtig!";
+          if(document.getElementById("comment").style.color=="pink") 
+            document.getElementById("comment").style.color="lightblue   ";
+          else
+            document.getElementById("comment").style.color="lightgreen";
+             
+      } else {
+          document.getElementById("comment").innerHTML = "Leider nicht ganz richtig. Versuche es nocheinmal!"; 
+          document.getElementById("comment").style.color="pink";//lightblue
+      }
+    }catch(e){  
+      document.getElementById("comment").innerHTML = "Falsches Format! Bitte geben Sie die Zeit im Format HH:MM ein.";
+      document.getElementById("comment").style.color="pink";//lightblue
+    }
+}
+
+addEventListener("DOMContentLoaded", (event) => {document.getElementById("Minuten").click()});
 
 function printit(){
     window.print();
@@ -64,235 +59,97 @@ function update(){
     }
   });
 }
-let arr;
-async function start(op2,text=false){
-    for(let i=0;i<op2.length;++i){
-        op2[i].push(i);//put index into op2[i][2]
-    }
-   // if(text===undefined) text=false;
-    if(text) document.getElementById("comment").innerText="Heute ist Drachengeburtstag. Aber was für ein Durcheinander. Sie muss die Kekse verteilen aber der Text hat Lücken. Fülle die Lücken aus.";
-    else document.getElementById("comment").innerText="";
-    let excercises=document.getElementById("excercises");
-    let html="";//you cannot set innerHTML in a loop, when it is invalid
-    html="<table>\n";
-    let numbers=document.getElementById("range").value.match(/\d+/g);
-    let range=document.getElementById("range").value.match(/\d+-\d+/g);
-    console.log(range);
-    console.log(numbers);
-    if(numbers==null) numbers=[];
-    let maxval=Math.max(...numbers);
-    //maxval overrides op2[i][1]
-    console.log(maxval);
-    let defaultval=true;
-    let mask=[];
-    if(maxval>-Infinity){
-        for(let i=0;i<op2.length;++i){
-            op2[i][1]=maxval;
-        }
-        mask=new Array(maxval).fill(false);
-        numbers?.forEach(el => mask[el-1]=true);
-        range?.forEach(el => {
-            let r=el.match(/\d+/g);
-            if(r[0]<0) r[0]=0;
-            for(let k=r[0];k<=r[1];++k) mask[k-1]=true;
-        });
 
-        defaultval=false;
-    }
-    
-    arr = new Array(op2.length);
-    for (var i = 0; i < arr.length; i++) {
-        arr[i] = new Array(op2[i][1]);
-        for (var j = 0; j < arr[i].length; j++) {
-            arr[i][j]=new Array(op2[i][1]).fill(defaultval);
-        }
-    }
+function drawHand(ctx, hours,minutes){
+  let hourangle = (hours % 12) * 30 + minutes / 2-90;
+  let minuteangle = minutes * 6-90;
 
-    
-    for (var i = 0; i < arr.length; i++) {
-        for(j=0;j<mask.length;++j){
-            for(k=0;k<mask.length;++k){
-                arr[i][j][k]=mask[j] && mask[k];
-            }
-        }
-    }
-      
+  ctx.beginPath();
+  ctx.lineWidth = 10;
+  ctx.moveTo(400, 400);
+  ctx.lineTo(400 + 250 * Math.cos(hourangle * Math.PI / 180), 400 + 250 * Math.sin(hourangle * Math.PI / 180));
+  //arrow at the end of the hour hand
+  ctx.stroke();
 
-    for(let i=0;i<20;++i){
-        html+="<tr>\n";
-        outer:
-        for(let j=0;j<(text?1:5);++j){  
-            html+=`<td id=`+i+`_`+j+`>`;
-            let op;
-            let opindex,a,b;
-            while(true){
-                if(op2.length==0) break outer;
-                opindex=Math.floor(Math.random()*op2.length);
-                //todo do here some avoiding of completed arrays
-                op=op2[opindex][0];
-            
-            
-                let a2=generateNumber(0,arr[op2[opindex][2]]);
-                a=wuerfle(a2);
-                if(a==undefined) {
-                    op2.splice(opindex, 1);
-                    console.log("splice",op2);
-                    continue;
-                }
-                let b2=generateNumber(a,arr[op2[opindex][2]]);
-
-            
-                b=wuerfle(b2);
-                if(b==undefined){
-                    op2.splice(opindex, 1);
-                    console.log("splice",op2);
-                    continue;
-                }
-                break;
-            }
-
-            if( ! arr[op2[opindex][2]][a-1][b-1]) html+="!";
-            arr[op2[opindex][2]][a-1][b-1]=false;     
-            let c;      
-            //check if type of op is array
-        
-
-            switch(op){
-                case "+":
-                    c=a+b;
-                    break;
-                case "*":
-                    c=a*b
-                    break;
-                case "-":
-                    if(a<b){
-                        let temp=a;
-                        a=b;
-                        b=temp;
-                    }
-                    c=a-b;
-                    break;
-                case "/": 
-                    c=a*b;
-                    let temp=a;
-                    a=c;
-                    c=temp;
-                    break;
-            }
-      
-            let type=Math.floor(Math.random()*3);
-        // type=0;
-            if(text){
-                switch(type){
-                    case 0://letztes ffeld input
-                        switch(op){
-                            case "*":
-                                html+="Jeder der "+a+" Drachen bekommt "+b+` Kekse. Wie viel Kekse muss die Drachenmama kaufen? <!--`+a+`*`+b+`=x--><input type="number" id="" name="" min="1" max="100"/>`;
-                                break;
-                            case "+":
-                                html+="Drache Susi bekommt "+a+" Kekse und Drache Frido bekommt "+b+` Kekse. Wie viel Kekse haben sie zusammen? <!--`+a+`+`+b+`=x--><input type="number" id="" name="" min="1" max="100"/>`;
-                                break;
-                            case "-":
-                                html+="Mama kauft "+a+" Kekse. Drache Frido bekommt "+b+` Kekse. Wie viel Kekse hat Mama noch? <!--`+a+`-`+b+`=x--><input type="number" id="" name="" min="1" max="100"/>`;
-                                break;g
-                            case "/":
-                                html+="Mama kauft "+a+" Kekse. Sie hat "+b+` Kinderdrachen bei der Geburtstagsparty. Wie viele Kekse bekommt jeder Kinderdrache? <!--`+a+`/`+b+`=x--><input type="number" id="" name="" min="1" max="100"/>`;
-                                break;
-                        }
-                        break;
-                    case 1://zweites feld input
-                    switch(op){
-                        case "*":
-                            html+="Jeder der "+a+" Drachen bekommt "+`<!--`+a+`*x`+`=`+c+`--><input type="number" id="" name="" min="1" max="100"/> Kekse. Die Drachenmama kauft `+c+` Kekse.`;
-                            break;
-                        case "+":
-                            html+="Drache Susi bekommt "+a+" Kekse und Drache Frido bekommt "+`<!--`+a+`+x=`+c+`--><input type="number" id="" name="" min="1" max="100"/> Kekse. Sie haben zusammen `+c+` Kekse.`;
-                            break;
-                        case "-":
-                            html+="Mama kauft "+a+" Kekse. Drache Frido bekommt "+`<!--`+a+`-x=`+c+`--><input type="number" id="" name="" min="1" max="100"/> Kekse. Mama hat noch `+c+` Kekse.`;
-                            break;
-                        case "/":
-                            html+="Mama kauft "+a+" Kekse. Sie hat "+`<!--`+a+`/x=`+c+`--><input type="number" id="" name="" min="1" max="100"/> Kinderdrachen bei der Geburtstagsparty. Jeder Kinderdrache bekommt `+c+" Kekse.";
-                            break;
-                    }
-                    break;
-                case 2://erstes feld input
-                    switch(op){
-                        case "*":
-                            html+=`Jeder der <!--x*`+b+`=`+c+`--><input type="number" id="" name="" min="1" max="100"/> Drachen bekommt `+b+` Kekse. Die Drachenmama kauft `+c+` Kekse.`;
-                            break;
-                        case "+":
-                            html+=`Drache Susi bekommt <!--x+`+b+`=`+c+`--><input type="number" id="" name="" min="1" max="100"/> Kekse und Drache Frido bekommt `+b+` Kekse. Sie haben zusammen `+c+` Kekse.`;
-                            break;
-                        case "-":
-                            html+=`Mama kauft <!--x-`+b+`=`+c+`--><input type="number" id="" name="" min="1" max="100"/> Kekse. Drache Frido bekommt `+b+` Kekse. Mama hat noch `+c+` Kekse.`;
-                            break;
-                        case "/":
-                            html+=`Mama kauft <!--x/`+b+`=`+c+`--><input type="number" id="" name="" min="1" max="100"/> Kekse. Sie hat `+b+` Kinderdrachen bei der Geburtstagsparty. Jeder Kinderdrache bekommt `+c+" Kekse.";
-                            break;
-                    }
-                    break;
-                }
-
-            }else{
-                switch(type){
-                    case 0:
-                        html+=""+a+op+b+`= <input type="number" id="" name="" min="1" max="100"/>`;
-                        break;
-                    case 1:
-                        html+=""+a+op+`<input type="number" id="" name="" min="1" max="100"/>=`+c;
-                        break;
-                    case 2:
-                        html+=`<input type="number" id="" name="" min="1" max="100"/>`+op+b+"="+c;
-                        break;
-                }
-            }
-
-            html+="</td>";
-        }
-        html+="</tr>\n";
-    }
-    excercises.innerHTML=html;
+  ctx.beginPath();
+  ctx.lineWidth=5;
+  ctx.moveTo(400, 400);
+  ctx.lineTo(400 + 350 * Math.cos(minuteangle * Math.PI / 180), 400 + 350 * Math.sin(minuteangle * Math.PI / 180));
+  ctx.stroke();
 }
-
-
-async function check(){
-    for(let i=0;i<20;++i){
-        for(let j=0;j<5;++j){
-            let td=document.getElementById(i+"_"+j);
-            if(td===null) continue;
-            let input=td.getElementsByTagName("input")[0];
-            if(input===undefined){//we have empty table element
-                continue;
-            }
-            if(input.value=="") {
-                td.style.backgroundColor="white";
-                continue;
-            }
-            let html=td.innerHTML.trim();
-            let check=html
-            if(html.match(/<!--/)){
-                check=html.replace(/.*<!--/,"");
-                check=check.replace(/-->.*/,"");
-                check=check.replace(/x/,input.value);
-            }
-            else check=check.replace(/<.*>/,input.value);
-
-            check=check.replaceAll("=","==");
-            console.log(check)
-            try{
-                if(eval(check)){
-                    if(td.style.backgroundColor=="pink" || td.style.backgroundColor=="lightblue" )
-                        td.style.backgroundColor="lightblue";
-                    else td.style.backgroundColor="lightgreen";
-                }else{
-                    td.style.backgroundColor="pink";
-                }
-            }
-            catch(err){
-                td.style.backgroundColor="white";
-            }
-        }
-        
+function start(multiples){
+   document.getElementById("comment").style.color="black";
+    //setup a canvas
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = 800;
+    canvas.height = 800;
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "black";
+    ctx.font = "30px Arial";
+    //draw the clock
+    ctx.beginPath();
+    ctx.arc(400, 400, 390, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(400, 400, 400, 0, 2 * Math.PI);
+    ctx.stroke();
+    //5 minute marks
+    for (let i = 0; i < 12; i++) {
+        ctx.beginPath();
+        ctx.arc(400 + 380 * Math.cos(i * Math.PI / 6), 400 + 380 * Math.sin(i * Math.PI / 6), 10, 0, 2 * Math.PI);
+        ctx.fill();
     }
+    //1 minute marks
+    for (let i = 0; i < 60; i++) {
+        ctx.beginPath();
+        ctx.arc(400 + 380 * Math.cos(i * Math.PI / 30), 400 + 380 * Math.sin(i * Math.PI / 30), 5, 0, 2 * Math.PI);
+        ctx.fill();
+    }
+    //put the numbers on the clock align them with the 5 minute marks
+    //care needs to be taken to align the two digit numbers differently
+    //to the one digit numbers
+    ctx.font = "60px Arial";
+    //draw test circle through numbers
+    //ctx.beginPath();
+    //ctx.arc(400, 400, 300, 0, 2 * Math.PI);
+    //ctx.stroke();
+
+    for (let i = 1; i <= 12; i++) {
+       //get text width and height
+        let text = ctx.measureText(i);
+        let textwidth = text.width;
+        let textheight = text.actualBoundingBoxAscent + text.actualBoundingBoxDescent;
+
+        //draw the text
+        if (i < 7) {
+            ctx.fillText(i, 400 + 300 * Math.cos((i - 3) * Math.PI / 6) - textwidth / 2, 400 + 300 * Math.sin((i - 3) * Math.PI / 6) + textheight / 2);
+        } else if(i<10){
+            ctx.fillText(i, 400 + 300 * Math.cos((i - 3) * Math.PI / 6) - textwidth/2, 400 + 300 * Math.sin((i - 3) * Math.PI / 6) + textheight / 2);
+        }else {
+            ctx.fillText(i, 400 + 300 * Math.cos((i - 3) * Math.PI / 6) - textwidth/2, 400 + 300 * Math.sin((i - 3) * Math.PI / 6) + textheight / 2);
+        }
+      }
+    //draw the hands
+    //let date = new Date();
+    //random time
+    hours = Math.floor(Math.random() * 12);
+    minutes = Math.floor(Math.random() * 60);
+    switch(multiples){
+      case 60:
+        minutes =0;
+        break;
+      case 30:
+        minutes = Math.floor(minutes/30)*30;
+        break;
+      case 15:
+        minutes = Math.floor(minutes/15)*15;
+        break;
+      case 1:
+        break;
+      default:
+        break;
+    }
+    drawHand(ctx, hours, minutes);
 }

@@ -1,7 +1,7 @@
-# Multab
+# Clock
 
 Multiplication table generator
-Try it at https://kiliansinger.github.io/multab/
+Try it at https://kiliansinger.github.io/clock/
 
 ## License
 

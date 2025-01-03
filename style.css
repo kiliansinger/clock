@@ -1,3 +1,31 @@
+@media (prefers-color-scheme: dark) {
+	:root {
+	  --background-color: #323232;
+	  --text-color: #ddd;
+	  --shadow-color: #111;
+	  --highlight: #666;
+	  --primary: hsl(12, 90%, 60%);
+	}
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+	  --background-color: #fefefe;
+	  --text-color: #222;
+	  --shadow-color: #999;
+	  --highlight: #cdcdcd;
+	  --primary: hsl(12, 70%, 40%);
+	}
+}
+
+body {
+	background-color: var(--background-color);
+	color: var (--text-color);
+}
+input{
+  font-size: 3em;
+}
+
 @page {
     size: A4
   }
@@ -33,7 +61,8 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333333;
+  background-color: light-dark(#333333, #cccccc);
+  color: dark-light(#333333, #cccccc);;
 }
 
 li {
@@ -76,3 +105,21 @@ li a:hover {
  input[type="number"] {
      -moz-appearance: textfield;
  }
+
+ canvas {
+  width: 90vmin;
+  height:90vmin;
+  background-color: light-dark(lightblue, darkblue);
+  color: dark-light(lightblue, darkblue);	
+ }
+
+p {
+  color: var(--text-color);
+  background-color: var(--background-color) 
+};
+h2 {
+  color: var(--text-color);
+  background-color: var(--background-color) 
+};
+
+
