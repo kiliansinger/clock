@@ -46,11 +46,11 @@ function check(input){
             document.getElementById("comment").style.color="lightgreen";
              
       } else {
-          document.getElementById("comment").innerHTML = "Leider nicht ganz richtig. Versuche es nocheinmal!"; 
+          document.getElementById("comment").innerHTML = "Falsch!"; 
           document.getElementById("comment").style.color="pink";//lightblue
       }
     }catch(e){  
-      document.getElementById("comment").innerHTML = "Falsches Format! Bitte geben Sie die Zeit im Format HH:MM ein.";
+      document.getElementById("comment").innerHTML = "Format: 12:34";
       document.getElementById("comment").style.color="pink";//lightblue
     }
 }
