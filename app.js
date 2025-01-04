@@ -2,33 +2,33 @@ function Sleep(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
-document.getElementById("Stunden").onclick = ()=>{start(60)};
-document.getElementById("Halbe").onclick = ()=>{start(30)};
-document.getElementById("Viertel").onclick = ()=>{start(15)};
-document.getElementById("Minuten").onclick = ()=>{start(1)};
-document.getElementById("check").onclick = ()=>{check(document.getElementById("input").value)};
-document.getElementById("update").onclick = update;
-document.getElementById("print").onclick = printit;
-
-document.getElementById("input").addEventListener("keydown", function(event) {
-  if (event.key === "Enter") {
-    if(document.getElementById("comment").style.color=="lightblue" || document.getElementById("comment").style.color=="lightgreen"){
-      document.getElementById("comment").innerHTML = "";
-      document.getElementById("input").value = "";
-      start(lastmultiples);
-    }
-    else check(event.target.value);
-  }
-});
-
-document.getElementById("input").addEventListener("blur", function(event) {
+function docheck(){
   if(document.getElementById("comment").style.color=="lightblue" || document.getElementById("comment").style.color=="lightgreen"){
     document.getElementById("comment").innerHTML = "";
     document.getElementById("input").value = "";
     start(lastmultiples);
   }
   else check(event.target.value);
+}
+document.getElementById("Stunden").onclick = ()=>{start(60)};
+document.getElementById("Halbe").onclick = ()=>{start(30)};
+document.getElementById("Viertel").onclick = ()=>{start(15)};
+document.getElementById("Minuten").onclick = ()=>{start(1)};
+document.getElementById("check").onclick = ()=>{docheck()};
+document.getElementById("update").onclick = update;
+document.getElementById("print").onclick = printit;
+
+
+document.getElementById("input").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    docheck(); 
+  }
 });
+
+document.getElementById("input").addEventListener("blur", function(event) {
+    docheck();
+});
+
 var hours=1;
 var minutes=1;
 

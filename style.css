@@ -107,8 +107,8 @@ li a:hover {
  }
 
  canvas {
-  width: 90vmin;
-  height:90vmin;
+  width: 80vmin;
+  height:80vmin;
   background-color: light-dark(lightblue, darkblue);
   color: dark-light(lightblue, darkblue);	
  }
