@@ -12,12 +12,18 @@ document.getElementById("print").onclick = printit;
 
 document.getElementById("input").addEventListener("keydown", function(event) {
   if (event.key === "Enter") {
-      check(event.target.value);
+    if(document.getElementById("comment").style.color=="lightblue" || document.getElementById("comment").style.color=="lightgreen"){
+      start(lastmultiples);
+    }
+    else check(event.target.value);
   }
 });
 
 document.getElementById("input").addEventListener("blur", function(event) {
-  check(event.target.value,hours,minutes);
+  if(document.getElementById("comment").style.color=="lightblue" || document.getElementById("comment").style.color=="lightgreen"){
+    start(lastmultiples);
+  }
+  else check(event.target.value);
 });
 var hours=1;
 var minutes=1;
@@ -31,7 +37,7 @@ function check(input){
       if(inputtime == time) {
           document.getElementById("comment").innerHTML = "Richtig!";
           if(document.getElementById("comment").style.color=="pink") 
-            document.getElementById("comment").style.color="lightblue   ";
+            document.getElementById("comment").style.color="lightblue";
           else
             document.getElementById("comment").style.color="lightgreen";
              
@@ -77,7 +83,9 @@ function drawHand(ctx, hours,minutes){
   ctx.lineTo(400 + 350 * Math.cos(minuteangle * Math.PI / 180), 400 + 350 * Math.sin(minuteangle * Math.PI / 180));
   ctx.stroke();
 }
+let lastmultiples=1;
 function start(multiples){
+  lastmultiples=multiples;
    document.getElementById("comment").style.color="black";
     //setup a canvas
     const canvas = document.getElementById("canvas");
