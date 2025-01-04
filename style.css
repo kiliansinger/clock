@@ -52,7 +52,7 @@ input{
     text-align: center;
   }
   input[type=number] {
-    width: 3ch; /* 3 characters width */
+    width: 1ch; /* 3 characters width */
 }
 
 
