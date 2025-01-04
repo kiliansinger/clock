@@ -17,7 +17,10 @@ document.getElementById("Minuten").onclick = ()=>{start(1)};
 document.getElementById("check").onclick = ()=>{docheck()};
 document.getElementById("update").onclick = update;
 document.getElementById("print").onclick = printit;
-
+//prvents the page from scrolling when the input field is focused
+document.getElementById("input").addEventListener("focus", function(event) {
+  event.target.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth", preventScroll: true });
+});
 
 document.getElementById("input").addEventListener("keydown", function(event) {
   if (event.key === "Enter") {
