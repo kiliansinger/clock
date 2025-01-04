@@ -23,7 +23,7 @@ body {
 	color: var (--text-color);
 }
 input{
-  font-size: 3em;
+  font-size: 1em;
 }
 
 @page {
