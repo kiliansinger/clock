@@ -25,10 +25,19 @@ document.getElementById("input").addEventListener("keydown", function(event) {
   }
 });
 
-document.getElementById("input").addEventListener("blur", function(event) {
-    docheck();
+//document.getElementById("input").addEventListener("blur", function(event) {
+ //   docheck();
+//});
+
+let scrollPosition = 0;
+
+document.getElementById("input").addEventListener("focus", function(event) {
+  scrollPosition = window.scrollY;
 });
 
+document.getElementById("input").addEventListener("blur", function(event) {
+  window.scrollTo(0, scrollPosition);
+});
 var hours=1;
 var minutes=1;
 
