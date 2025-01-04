@@ -13,6 +13,7 @@ document.getElementById("print").onclick = printit;
 document.getElementById("input").addEventListener("keydown", function(event) {
   if (event.key === "Enter") {
     if(document.getElementById("comment").style.color=="lightblue" || document.getElementById("comment").style.color=="lightgreen"){
+      document.getElementById("comment").value = "";
       start(lastmultiples);
     }
     else check(event.target.value);
@@ -21,6 +22,7 @@ document.getElementById("input").addEventListener("keydown", function(event) {
 
 document.getElementById("input").addEventListener("blur", function(event) {
   if(document.getElementById("comment").style.color=="lightblue" || document.getElementById("comment").style.color=="lightgreen"){
+    document.getElementById("comment").value = "";
     start(lastmultiples);
   }
   else check(event.target.value);
