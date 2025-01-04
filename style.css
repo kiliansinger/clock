@@ -122,4 +122,8 @@ h2 {
   background-color: var(--background-color) 
 };
 
-
+ /*prevent pwa refresh on scroll*/
+ html,
+body {
+    overscroll-behavior-y: contain;
+}
