@@ -21,6 +21,13 @@ document.getElementById("print").onclick = printit;
 document.getElementById("input").addEventListener("focus", function(event) {
   event.target.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth", preventScroll: true });
 });
+document.getElementById("input").addEventListener("focus", function(event) {
+  event.target.classList.add("fixed-input");
+});
+
+document.getElementById("input").addEventListener("blur", function(event) {
+  event.target.classList.remove("fixed-input");
+});
 
 document.getElementById("input").addEventListener("keydown", function(event) {
   if (event.key === "Enter") {
