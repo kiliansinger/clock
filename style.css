@@ -127,9 +127,3 @@ h2 {
 body {
     overscroll-behavior-y: contain;
 }
-.fixed-input {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-}
