@@ -10,6 +10,18 @@ function docheck(){
   }
   else check(event.target.value);
 }
+let maxcount=5;	
+let message="";
+function game(){
+  document.getElementById("menu").style.display="none";
+  gamemode=true;
+  maxcount=prompt("Wie viele Aufgaben hintereinander? (Standard: 5)","5");
+  message=prompt("Geheime Nachricht für den Gewinner:","Gewonnen!");
+
+  count=0;
+  start(lastmultiples);
+}
+document.getElementById("game").onclick = ()=>{game()};
 document.getElementById("Stunden").onclick = ()=>{start(60)};
 document.getElementById("Halbe").onclick = ()=>{start(30)};
 document.getElementById("Viertel").onclick = ()=>{start(15)};
@@ -42,8 +54,21 @@ function check(input){
           document.getElementById("comment").innerHTML = "Richtig!";
           if(document.getElementById("comment").style.color=="pink") 
             document.getElementById("comment").style.color="lightblue";
-          else
+          else{
             document.getElementById("comment").style.color="lightgreen";
+            if(gamemode){
+              count++;
+              if(count<maxcount){
+                //Sleep(2000).then(() => {start(lastmultiples);});
+              }else{
+                document.getElementById("comment").innerHTML = message;
+                document.getElementById("comment").style.color="lightgreen";
+                document.getElementById("menu").style.display="block";
+                document.getElementById("input").value = "";
+                gamemode=false;
+              }
+            }
+          }
              
       } else {
           document.getElementById("comment").innerHTML = "Falsch!"; 
@@ -88,6 +113,8 @@ function drawHand(ctx, hours,minutes){
   ctx.stroke();
 }
 let lastmultiples=1;
+let gamemode=false;
+let count=0;  
 function start(multiples){
   lastmultiples=multiples;
    document.getElementById("comment").style.color="black";
